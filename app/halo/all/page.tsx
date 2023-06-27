@@ -29,7 +29,7 @@ export default function All() {
   return (
     <div className="min-h-screen">
       <h1>#ブルアカ #ヘイロー #3D</h1>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-4">
         <select
           className="select min-w-[8rem]"
           onChange={e => setHaloID(e.currentTarget.value)}
@@ -64,7 +64,7 @@ const Halo = ({ id }: HaloProps) => {
     <div className="rounded-box h-80 w-80 bg-slate-800">
       <Canvas>
         <Suspense fallback={<Loader />}>
-          <Stage>
+          <Stage shadows="accumulative">
             <Scene id={id} />
           </Stage>
           {/* <PerspectiveCamera makeDefault /> */}
