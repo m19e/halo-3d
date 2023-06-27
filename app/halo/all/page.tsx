@@ -10,8 +10,21 @@ import {
 } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 
+const students = [
+  { id: "hina", name: "ヒナ" },
+  { id: "ako", name: "アコ" },
+  { id: "iori", name: "イオリ" },
+  { id: "chinatsu", name: "チナツ" },
+]
+
 export default function All() {
   const [haloID, setHaloID] = useState("hoshino")
+
+  const options = students.map(s => (
+    <option key={s.id} value={s.id}>
+      {s.name}
+    </option>
+  ))
 
   return (
     <div className="min-h-screen">
@@ -26,6 +39,7 @@ export default function All() {
           <option value="shiroko">シロコ</option>
           <option value="serika">セリカ</option>
           <option value="ayane">アヤネ</option>
+          {options}
         </select>
         <Halo id={haloID} />
       </div>
