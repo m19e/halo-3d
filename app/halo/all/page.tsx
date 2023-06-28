@@ -7,6 +7,7 @@ import {
   Stage,
   Html,
   useProgress,
+  PerspectiveCamera,
 } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 
@@ -41,7 +42,7 @@ export default function All() {
           <option value="ayane">アヤネ</option>
           {options}
         </select>
-        <Halo id={haloID} />
+        <Halo key={haloID} id={haloID} />
       </div>
     </div>
   )
@@ -51,7 +52,7 @@ const Loader = () => {
   const { progress } = useProgress()
   return (
     <Html center>
-      <span className="text-white">{progress} % loaded</span>
+      <span className="loading loading-ring loading-lg text-info"></span>
     </Html>
   )
 }
@@ -67,8 +68,8 @@ const Halo = ({ id }: HaloProps) => {
           <Stage shadows="accumulative">
             <Scene id={id} />
           </Stage>
-          {/* <PerspectiveCamera makeDefault /> */}
-          <OrbitControls />
+          <PerspectiveCamera />
+          <OrbitControls enablePan={false} />
         </Suspense>
       </Canvas>
     </div>
