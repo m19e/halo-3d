@@ -68,7 +68,7 @@ const Halo = ({ id }: HaloProps) => {
             <Scene id={id} />
           </Stage>
           {/* <PerspectiveCamera makeDefault /> */}
-          <OrbitControls enablePan={false} enableZoom={false} />
+          <OrbitControls />
         </Suspense>
       </Canvas>
     </div>
