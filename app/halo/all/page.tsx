@@ -1,6 +1,7 @@
 "use client"
 
-import { Suspense, useState } from "react"
+import { Suspense, useState, useRef } from "react"
+import type { RefObject } from "react"
 import {
   OrbitControls,
   useFBX,
@@ -11,6 +12,29 @@ import {
 } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 
+const useCanvas = (): [RefObject<HTMLCanvasElement>, { save: () => void }] => {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  const downloadURI = (uri: string, name: string) => {
+    const link = document.createElement("a")
+    link.download = name
+    link.href = uri
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const save = () => {
+    const uri = canvasRef.current?.toDataURL()
+    if (uri) {
+      const fileName = `halo-${Date.now().toString(16)}.png`
+      downloadURI(uri, fileName)
+    }
+  }
+
+  return [canvasRef, { save }]
+}
+
 const students = [
   { id: "hina", name: "ヒナ" },
   { id: "ako", name: "アコ" },
@@ -20,6 +44,7 @@ const students = [
 
 export default function All() {
   const [haloID, setHaloID] = useState("hoshino")
+  const [canvasRef, { save }] = useCanvas()
 
   const options = students.map(s => (
     <option key={s.id} value={s.id}>
@@ -42,7 +67,18 @@ export default function All() {
           <option value="ayane">アヤネ</option>
           {options}
         </select>
-        <Halo key={haloID} id={haloID} />
+        <div className="rounded-box h-80 w-80 bg-slate-800">
+          <Canvas
+            ref={canvasRef}
+            camera={{ position: [0, 0, 1] }}
+            gl={{ preserveDrawingBuffer: true }}
+          >
+            <Halo key={haloID} id={haloID} />
+          </Canvas>
+        </div>
+        <button className="btn" onClick={save}>
+          save
+        </button>
       </div>
     </div>
   )
@@ -61,18 +97,26 @@ type HaloProps = {
   id: string
 }
 const Halo = ({ id }: HaloProps) => {
+  // const { camera, controls } = useThree()
+  // const [rotation, setRotation] = useControls(() => ({
+  //   x: { value: 0, min: -12, max: 12, steps: 0.1 },
+  //   y: { value: 0, min: -12, max: 12, steps: 0.1 },
+  //   z: { value: 1, min: 1, max: 3, steps: 0.1 },
+  // }))
+
+  // useEffect(() => {
+  //   const { x, y, z } = rotation
+  //   camera.position.set(x, y, z)
+  // }, [rotation])
+
   return (
-    <div className="rounded-box h-80 w-80 bg-slate-800">
-      <Canvas>
-        <Suspense fallback={<Loader />}>
-          <Stage shadows="accumulative">
-            <Scene id={id} />
-          </Stage>
-          <PerspectiveCamera />
-          <OrbitControls enablePan={false} />
-        </Suspense>
-      </Canvas>
-    </div>
+    <Suspense fallback={<Loader />}>
+      <Stage shadows="accumulative">
+        <Scene id={id} />
+      </Stage>
+      <PerspectiveCamera />
+      <OrbitControls enablePan={false} minDistance={1} maxDistance={7} />
+    </Suspense>
   )
 }
 
