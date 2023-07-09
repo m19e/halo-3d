@@ -64,7 +64,6 @@ export default function All() {
     <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
-        {/* Page content here */}
         <div className="bg-triangle min-h-screen py-4">
           <h1>#ブルアカ #ヘイロー #3D</h1>
           <label htmlFor="my-drawer" className="btn-primary drawer-button btn">
