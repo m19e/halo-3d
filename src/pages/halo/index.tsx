@@ -29,7 +29,6 @@ const useCanvas = (): [
   const save = (id: string) => {
     const uri = canvasRef.current?.toDataURL()
     if (uri) {
-      // const fileName = `halo-${Date.now().toString(16)}.png`
       const fileName = `${id}-${Date.now().toString(16)}.png`
       downloadURI(uri, fileName)
     }
